@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersService } from './users.service';
-import { User, UserSchema } from '../services/data-service/schemas/user.schema';
+import {
+  User,
+  UserSchema,
+} from '../frameworks/data-service/mongo/schemas/user.schema';
 import {
   RefreshToken,
   RefreshTokenSchema,
-} from '../services/data-service/schemas/refresh-token.schema';
+} from '../frameworks/data-service/mongo/schemas/refresh-token.schema';
 
 @Module({
   imports: [

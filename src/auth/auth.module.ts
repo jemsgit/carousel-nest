@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
+import { DataSeviceModule } from '../services/data-service/data-service.service';
 
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './strategies/local.strategy';
@@ -12,7 +13,7 @@ import { jwtConstants } from './constants';
 
 @Module({
   imports: [
-    UsersModule,
+    DataSeviceModule,
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,

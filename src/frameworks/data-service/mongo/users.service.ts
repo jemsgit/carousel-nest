@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { User } from './schemas/user.schema';
 
-import { CreateUserDto } from '../../core/dto/create-user.dto';
+import { CreateUserDto } from '../../../core/dto/create-user.dto';
 
 type MongoResponse<T> = Promise<T | null | undefined>;
 
