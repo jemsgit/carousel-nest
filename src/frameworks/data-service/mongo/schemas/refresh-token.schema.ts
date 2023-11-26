@@ -1,3 +1,5 @@
+// schema describes our database entity
+
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { User } from './user.schema';

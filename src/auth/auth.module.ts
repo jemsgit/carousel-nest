@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UsersModule } from '../users/users.module';
 import { DataSeviceModule } from '../services/data-service/data-service.service';
 
 import { PassportModule } from '@nestjs/passport';
@@ -13,7 +12,7 @@ import { jwtConstants } from './constants';
 
 @Module({
   imports: [
-    DataSeviceModule,
+    DataSeviceModule, // use mongo implementation of data service
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,

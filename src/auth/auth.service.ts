@@ -6,7 +6,7 @@ import { IDataService } from 'src/core';
 @Injectable()
 export class AuthService {
   constructor(
-    private dataService: IDataService,
+    private dataService: IDataService, // current service is mongo data service
     private jwtService: JwtService,
   ) {}
 
@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   async refreshTokens(username: string, refreshToken: string) {
-    const user = await this.usersService.findOne(username);
+    const user = await this.dataService.users.findOne(username);
     if (!user || !user.refreshToken)
       throw new ForbiddenException('Access Denied');
     const refreshTokenMatches = user.refreshToken === refreshToken;
@@ -54,6 +54,6 @@ export class AuthService {
   }
 
   async updateRefreshToken(username: any, refresh_token: string) {
-    await this.usersService.updateRefresh(username, refresh_token);
+    await this.dataService.users.updateRefresh(username, refresh_token);
   }
 }

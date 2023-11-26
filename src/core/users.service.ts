@@ -1,7 +1,12 @@
-import { CreateUserDto } from './dto/create-user.dto';
+// interface for UsersService wich should be implemented
+// by every seervice responsible for wokring with users data
 
-export interface UsersService {
-  createUser: (user: CreateUserDto) => void;
-  findOne: (username: string) => void;
+import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entities/user.entity';
+import { TypeOrNone } from '../types/shared';
+
+export interface IUsersService {
+  createUser: (user: CreateUserDto) => Promise<User>;
+  findOne: (username: string) => Promise<TypeOrNone<User>>;
   updateRefresh: (username: string, token: string) => void;
 }

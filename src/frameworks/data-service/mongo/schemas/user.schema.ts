@@ -1,5 +1,7 @@
+// schema describes our database entity
+
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Document } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
