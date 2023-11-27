@@ -5,8 +5,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { TypeOrNone } from '../types/shared';
 
-export interface IUsersService {
-  createUser: (user: CreateUserDto) => Promise<User>;
-  findOne: (username: string) => Promise<TypeOrNone<User>>;
-  updateRefresh: (username: string, token: string) => void;
+export abstract class IUsersService {
+  abstract createUser: (user: CreateUserDto) => Promise<User>;
+  abstract findOne: (username: string) => Promise<TypeOrNone<User>>;
+  abstract updateRefresh: (username: string, token: string) => void;
+  abstract getToken: (userId: string) => Promise<string | null>;
 }

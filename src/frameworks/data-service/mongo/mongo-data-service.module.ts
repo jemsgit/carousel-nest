@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { IDataService } from '../../../core';
-import { DATA_BASE_CONFIGURATION } from '../../../configuration';
 import { User, UserSchema } from './schemas/user.schema';
 import {
   RefreshToken,
   RefreshTokenSchema,
 } from './schemas/refresh-token.schema';
 import { MongoDataServices } from './mongo-data-service.service';
-import { UsersService } from './users.service';
+import configuration from '../../../configuration';
 
 @Module({
   imports: [
@@ -16,8 +16,16 @@ import { UsersService } from './users.service';
       { name: User.name, schema: UserSchema },
       { name: RefreshToken.name, schema: RefreshTokenSchema },
     ]),
-    MongooseModule.forRoot(DATA_BASE_CONFIGURATION.mongoConnectionString),
-    UsersService,
+    ConfigModule.forRoot({
+      load: [configuration], // use configuration with .env file
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule], // inject config module
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('mongoConnectionString'),
+      }),
+      inject: [ConfigService],
+    }),
   ],
   providers: [
     {

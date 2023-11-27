@@ -2,17 +2,17 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
 
-import { MongooseModule } from '@nestjs/mongoose';
+import configuration from './configuration';
+
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://user:pass@cluster0.5gwm9xg.mongodb.net/carousels?retryWrites=true&w=majority',
-    ),
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
     AuthModule,
-    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

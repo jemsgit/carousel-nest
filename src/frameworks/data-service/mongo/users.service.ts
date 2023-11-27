@@ -2,22 +2,29 @@
 
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 
-import { User } from './schemas/user.schema';
+import { User, UserDocument } from './schemas/user.schema';
 
 import { CreateUserDto } from '../../../core/dto/create-user.dto';
 import { IUsersService } from '../../../core/users.service';
 import { TypeOrNone } from 'src/types/shared';
-import { RefreshToken } from './schemas/refresh-token.schema';
+import { RefreshTokenDocument } from './schemas/refresh-token.schema';
 
-@Injectable()
+// implementation of IUsersService for mongodb
+// we pass models as arguments and create instance of usersService explicit
+// because we cant inject service into mongo-data-service
+
 export class UsersService implements IUsersService {
+  private userModel: Model<UserDocument>;
+  private refreshTokenModel: Model<RefreshTokenDocument>;
+
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
-    @InjectModel(RefreshToken.name)
-    private refreshTokenModel: Model<RefreshToken>,
-  ) {}
+    userModel: Model<UserDocument>,
+    refreshTokenModel: Model<RefreshTokenDocument>,
+  ) {
+    this.userModel = userModel;
+    this.refreshTokenModel = refreshTokenModel;
+  }
   private users = [
     {
       userId: 1,
@@ -33,20 +40,20 @@ export class UsersService implements IUsersService {
     },
   ];
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<UserDocument> {
     const createdCat = new this.userModel(createUserDto);
     return createdCat.save();
   }
 
-  async findUserToken(username: string): Promise<string | null> {
+  async getToken(username: string): Promise<string | null> {
     const user = await this.userModel.findOne({ name: username });
     if (!user) {
       return null;
     }
-    return await this.refreshTokenModel.findOne({ user: user._id });
+    return this.refreshTokenModel.findOne({ user: user.id });
   }
 
-  async findOne(username: string): Promise<TypeOrNone<User>> {
+  async findOne(username: string): Promise<TypeOrNone<UserDocument>> {
     return this.userModel.findOne({ name: username });
   }
 
